@@ -177,11 +177,15 @@ body { letter-spacing: 0; }
 .side-portrait { z-index: 1; height: min(36svh, 340px); max-width: 27%; opacity: min(1, calc(var(--spread) * 5)); }
 .side-left { transform: translateX(calc(-50% - var(--spread) * 260px)) translateY(calc(30px + var(--spread) * 20px)) rotate(calc(var(--spread) * -8deg)); }
 .side-right { transform: translateX(calc(-50% + var(--spread) * 260px)) translateY(calc(30px + var(--spread) * 80px)) rotate(calc(var(--spread) * 7deg)); }
-.statement-journey { height: 300svh; }
+.statement-journey { height: 120svh; }
 .statement-page { position: sticky; top: 0; min-height: 100svh; padding-top: calc(var(--nav-height) + 24px); padding-bottom: 48px; }
+.statement-page.is-returning { position: relative; }
 .statement-line { position: relative; font-size: 32px; line-height: 1.25; }
 .statement-lead { font-size: 52px; line-height: 1.1; }
 .typed-line { position: absolute; inset: 0; }
+.statement-page.is-returning .typed-line { animation: statement-return-fade .7s ease-out both; }
+.statement-page.is-outside .typed-line { opacity: 0; animation: none; }
+@keyframes statement-return-fade { from { opacity: 0; } to { opacity: 1; } }
 .film-photo.is-centered { filter: grayscale(0); }
 .dark { --background: oklch(0.22 0.025 250); --foreground: oklch(0.96 0.008 240); --muted-foreground: oklch(0.75 0.02 240); --primary: oklch(0.63 0.13 250); --accent: oklch(0.72 0.12 230); --border: oklch(0.4 0.03 240); }
 @media (max-width: 1100px) {

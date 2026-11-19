@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import photos from "@/assets/photos.json";
 
-function useScrollProgress(onProgress: (progress: number) => void) {
+function useScrollProgress(onProgress: (progress: number) => void, leadInViewports = 0) {
   const ref = useRef<HTMLElement>(null);
   const callback = useRef(onProgress);
   callback.current = onProgress;
@@ -17,7 +17,10 @@ function useScrollProgress(onProgress: (progress: number) => void) {
       }
       const rect = el.getBoundingClientRect();
       const distance = Math.max(1, rect.height - window.innerHeight);
-      callback.current(Math.max(0, Math.min(1, -rect.top / distance)));
+      const rawProgress = -rect.top / distance;
+      const startProgress = -(window.innerHeight * leadInViewports) / distance;
+      const progress = (rawProgress - startProgress) / (1 - startProgress);
+      callback.current(Math.max(0, Math.min(1, progress)));
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();
@@ -55,18 +58,46 @@ const statement = [
   "As a pharmacist, I bring that same spirit of service to the health and wellbeing of my community.",
 ];
 const length = statement.join("").length;
+const typingRange = 1;
 
 export function ScrollStatement() {
   const [count, setCount] = useState(0);
-  const ref = useScrollProgress((p) => setCount(Math.floor(Math.max(0, Math.min(1, (p - 0.08) / 0.78)) * length)));
+  const [outside, setOutside] = useState(false);
+  const [fadeVersion, setFadeVersion] = useState(0);
+  const completed = useRef(false);
+  const wasOutside = useRef(false);
+  const pageRef = useRef<HTMLDivElement>(null);
+  const ref = useScrollProgress((progress) => {
+    if (!completed.current) {
+      const nextCount = Math.floor(Math.min(1, progress / typingRange) * length);
+      setCount(nextCount);
+      if (nextCount >= length) completed.current = true;
+    }
+  }, 0.45);
+  useEffect(() => {
+    const page = pageRef.current;
+    if (!page) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (wasOutside.current && completed.current) setFadeVersion((version) => version + 1);
+        wasOutside.current = false;
+        setOutside(false);
+      } else if (completed.current) {
+        wasOutside.current = true;
+        setOutside(true);
+      }
+    });
+    observer.observe(page);
+    return () => observer.disconnect();
+  }, []);
   let offset = 0;
   return (
     <section ref={ref} className="statement-journey bg-background">
-      <div className="statement-page mx-auto flex max-w-5xl flex-col justify-center gap-7 px-6">
+      <div ref={pageRef} className={`statement-page mx-auto flex max-w-5xl flex-col justify-center gap-7 px-6${outside ? " is-outside" : ""}${fadeVersion > 0 ? " is-returning" : ""}`}>
         {statement.map((text, i) => {
           const visible = text.slice(0, Math.max(0, count - offset));
           offset += text.length;
-          return <p key={text} aria-label={text} className={`statement-line font-serif ${i === 0 ? "statement-lead text-primary" : i === 1 ? "text-foreground" : "italic text-accent"}`}>
+          return <p key={`${text}-${fadeVersion}`} aria-label={text} className={`statement-line font-serif ${i === 0 ? "statement-lead text-primary" : i === 1 ? "text-foreground" : "italic text-accent"}`}>
             <span aria-hidden="true" className="invisible">{text}</span>
             <span aria-hidden="true" className="typed-line">{visible}</span>
           </p>;
