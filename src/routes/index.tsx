@@ -7,8 +7,12 @@ import { HeroScene, ScrollStatement, useCenteredPhotos } from "@/components/port
 import { contact } from "@/lib/contact";
 import { Mail, Phone, Linkedin, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
+const P = photos as string[];
+const heroPhotoIndices = [24, 94, 23] as const;
+
 export const Route = createFileRoute("/")({
   head: () => ({
+    links: heroPhotoIndices.map((index) => ({ rel: "preload", as: "image", href: P[index] })),
     meta: [
       { title: "Gyampo Ayeh Ebenezer Derrick | Student Leader & Pharmacist" },
       { name: "description", content: "Portfolio of Gyampo Ayeh Ebenezer Derrick: 68th UGSRC Vice President, JCR President and Doctor of Pharmacy, University of Ghana." },
@@ -20,8 +24,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-const P = photos as string[];
 
 const chapters = [
   {
@@ -134,9 +136,9 @@ function Index() {
         {chapters.map((c, idx) => (
           <article key={c.no} className={`mx-auto grid max-w-7xl items-center gap-12 px-6 md:grid-cols-2 ${idx % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
             <div className="reveal relative h-[460px] md:h-[560px]">
-              <img src={P[c.imgs[0]]} alt="" className="absolute left-0 top-0 h-[78%] w-[68%] object-cover shadow-xl" />
-              <img src={P[c.imgs[1]]} alt="" className="absolute bottom-0 right-0 h-[55%] w-[50%] rotate-3 border-8 border-background object-cover shadow-xl transition duration-500 hover:rotate-0 hover:scale-105" />
-              <img src={P[c.imgs[2]]} alt="" className="absolute bottom-6 left-6 h-28 w-28 -rotate-6 rounded-full border-4 border-secondary object-cover md:h-36 md:w-36" />
+              <img src={P[c.imgs[0]]} alt="" loading="lazy" decoding="async" className="absolute left-0 top-0 h-[78%] w-[68%] object-cover shadow-xl" />
+              <img src={P[c.imgs[1]]} alt="" loading="lazy" decoding="async" className="absolute bottom-0 right-0 h-[55%] w-[50%] rotate-3 border-8 border-background object-cover shadow-xl transition duration-500 hover:rotate-0 hover:scale-105" />
+              <img src={P[c.imgs[2]]} alt="" loading="lazy" decoding="async" className="absolute bottom-6 left-6 h-28 w-28 -rotate-6 rounded-full border-4 border-secondary object-cover md:h-36 md:w-36" />
             </div>
             <div className="reveal">
               <div className="font-display text-[9rem] leading-none text-primary/25 md:text-[12rem]">{c.no}</div>

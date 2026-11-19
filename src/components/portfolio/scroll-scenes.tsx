@@ -43,9 +43,9 @@ export function HeroScene() {
       <div className="hero-scene">
         <div className="hero-word text-outline font-display" aria-hidden="true">GYAMPO</div>
         <div ref={stage} className="portrait-stage">
-          <img src={photos[24]} alt="Gyampo at a campus event" className="side-portrait side-left" />
-          <img src={photos[94]} alt="Gyampo at his graduation" className="side-portrait side-right" />
-          <img src={photos[23]} alt="Gyampo Ayeh Ebenezer Derrick in a brown suit" className="main-portrait" fetchPriority="high" />
+          <img src={photos[24]} alt="Gyampo at a campus event" className="side-portrait side-left" loading="eager" fetchPriority="high" decoding="async" />
+          <img src={photos[94]} alt="Gyampo at his graduation" className="side-portrait side-right" loading="eager" fetchPriority="high" decoding="async" />
+          <img src={photos[23]} alt="Gyampo Ayeh Ebenezer Derrick in a brown suit" className="main-portrait" loading="eager" fetchPriority="high" decoding="async" />
         </div>
       </div>
     </section>
