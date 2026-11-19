@@ -64,9 +64,48 @@ const chapters = [
 ];
 
 const impact = [
-  { n: 100, s: "", l: "laptops donated | One Student, One Laptop" },
-  { n: 68, s: "th", l: "UGSRC administration, serving as Vice President" },
-  { n: 97, s: "+", l: "moments of service captured" },
+  {
+    kicker: "Student support",
+    title: "One Student, One Laptop",
+    body: "The UGSRC Welfare Scheme donated 100 high-end laptops to support the University of Ghana’s One Student, One Laptop initiative.",
+    images: [42],
+    alt: "University of Ghana leaders presenting laptops for the One Student, One Laptop initiative",
+  },
+  {
+    kicker: "Student leadership",
+    title: "68th UGSRC Vice President",
+    body: "Served students through the University of Ghana Students’ Representative Council from 2025 to 2026.",
+    images: [16],
+    alt: "Gyampo speaking at a student leadership event",
+  },
+  {
+    kicker: "Residential leadership",
+    title: "JCR President",
+    body: "Led Jean Nelson Aka Hall as Junior Common Room President from 2024 to 2025.",
+    images: [8],
+    alt: "Gyampo’s Jean Nelson Aka Hall JCR President campaign portrait",
+  },
+  {
+    kicker: "International exchange",
+    title: "Togo & Benin",
+    body: "Helped deliver the Campus to Countries initiative, creating cross-border cultural exchange and experiential learning for students.",
+    images: [72],
+    alt: "Gyampo and a fellow participant during an international youth exchange",
+  },
+  {
+    kicker: "Community work & volunteering",
+    title: "Showing up for the community",
+    body: "Contributed to Dean’s Food Bank and medical school donations, and engaged school children through community outreach.",
+    images: [36, 86, 85],
+    alt: "Food bank donation, medical school outreach, and engagement with school children",
+  },
+  {
+    kicker: "Research",
+    title: "AI in health professions education",
+    body: "As a Research Assistant in Pharmaceutical Chemistry, supported a systematic review on AI as a core competency in health professions education.",
+    images: [25],
+    alt: "Gyampo in a pharmacy setting during his health sciences training",
+  },
 ];
 
 function useReveal() {
@@ -79,27 +118,6 @@ function useReveal() {
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
-}
-
-function Counter({ to, suffix }: { to: number; suffix: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [v, setV] = useState(0);
-  useEffect(() => {
-    const io = new IntersectionObserver(([e]) => {
-      if (!e?.isIntersecting) return;
-      io.disconnect();
-      const t0 = performance.now();
-      const tick = (t: number) => {
-        const k = Math.min(1, (t - t0) / 1400);
-        setV(Math.round(to * (1 - Math.pow(1 - k, 3))));
-        if (k < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    });
-    if (ref.current) io.observe(ref.current);
-    return () => io.disconnect();
-  }, [to]);
-  return <span ref={ref}>{v}{suffix}</span>;
 }
 
 function Marquee({ children, reverse }: { children: ReactNode; reverse?: boolean }) {
@@ -176,12 +194,32 @@ function Index() {
           <h2 className="reveal font-display text-6xl uppercase md:text-8xl">
             Impact, <span className="font-serif italic normal-case text-secondary">not promises.</span>
           </h2>
-          <div className="mt-16 grid gap-12 md:grid-cols-3">
-            {impact.map((i) => (
-              <div key={i.l} className="reveal border-t-2 border-primary-foreground/40 pt-6">
-                <div className="font-display text-8xl text-secondary md:text-9xl"><Counter to={i.n} suffix={i.s} /></div>
-                <p className="mt-2 text-lg font-bold">{i.l}</p>
-              </div>
+          <p className="reveal mt-6 max-w-2xl text-lg text-primary-foreground/85">Leadership, service, international exchange and research—grounded in work with students and communities.</p>
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {impact.map((point, index) => (
+              <article key={point.title} className="reveal group overflow-hidden border border-primary-foreground/20 bg-ink/15">
+                <div className={`impact-card-image relative grid h-52 overflow-hidden${point.images.length > 1 ? " grid-cols-[1.35fr_1fr] grid-rows-2 gap-1" : ""}`}>
+                  {point.images.map((imageIndex, imagePosition) => (
+                    <img
+                      key={imageIndex}
+                      src={P[imageIndex]}
+                      alt={imagePosition === 0 ? point.alt : ""}
+                      aria-hidden={imagePosition > 0 ? true : undefined}
+                      loading="lazy"
+                      decoding="async"
+                      className={`h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]${point.images.length > 1 && imagePosition === 0 ? " row-span-2" : ""}`}
+                    />
+                  ))}
+                  <span className="absolute left-4 top-4 rounded-full border border-white/50 bg-ink/75 px-3 py-1 font-display text-sm uppercase tracking-wider text-white backdrop-blur-sm">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <div className="min-h-56 border-t border-primary-foreground/20 p-6">
+                  <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-secondary">{point.kicker}</p>
+                  <h3 className="mt-3 font-display text-3xl uppercase leading-tight text-primary-foreground">{point.title}</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-primary-foreground/80">{point.body}</p>
+                </div>
+              </article>
             ))}
           </div>
         </div>
