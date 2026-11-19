@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     links: heroPhotoIndices.map((index) => ({ rel: "preload", as: "image", href: P[index] })),
     meta: [
-      { title: "Gyampo Ayeh Ebenezer Derrick | Student Leader & Pharmacist" },
+      { title: "Gyampo Ayeh Ebenezer Derrick | Leader, Pharmacist & Researcher" },
       { name: "description", content: "Portfolio of Gyampo Ayeh Ebenezer Derrick: 68th UGSRC Vice President, JCR President and Doctor of Pharmacy, University of Ghana." },
       { property: "og:title", content: "Gyampo Ayeh Ebenezer Derrick | Portfolio" },
       { property: "og:description", content: "Leadership, service and pharmacy at the University of Ghana." },
@@ -161,7 +161,7 @@ function Index() {
           <h1 className="font-display text-5xl uppercase leading-none md:text-7xl">
             Ayeh Ebenezer <span className="font-serif italic normal-case text-secondary">Derrick</span>
           </h1>
-          <p className="max-w-sm text-lg opacity-80">Student leader. Pharmacist. Advocate.</p>
+          <p className="max-w-sm text-lg opacity-80">Leader. Pharmacist. Advocate. Researcher.</p>
         </div>
       </section>
       <ScrollStatement />
