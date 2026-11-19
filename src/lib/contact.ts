@@ -1,8 +1,8 @@
-// Replace these placeholders before publishing. Set placeholder to false when ready.
 export const contact = {
-  placeholder: true,
-  email: "hello@example.com",
-  phone: "+233 XX XXX XXXX",
-  phoneHref: "+233000000000",
-  linkedin: "https://www.linkedin.com/in/your-profile/",
+  placeholder: false,
+  email: "ebenezergyampo9@gmail.com",
+  phone: "+233 (0) 240 839 516",
+  instagram: "https://www.instagram.com/_.gyamp0/",
+  x: "https://x.com/gyampoebenezer",
+  linkedin: "https://www.linkedin.com/in/gyampoayeh09",
 };

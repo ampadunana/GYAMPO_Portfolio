@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Brand } from "@/components/portfolio/brand";
 import { HeroScene, ScrollStatement, useCenteredPhotos } from "@/components/portfolio/scroll-scenes";
 import { contact } from "@/lib/contact";
-import { Mail, Phone, Linkedin, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Mail, Phone, Linkedin, Instagram, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const P = photos as string[];
 const heroPhotoIndices = [24, 94, 23] as const;
@@ -199,18 +199,38 @@ function Index() {
           <h2 className="mt-4 font-display text-6xl uppercase leading-none md:text-8xl">
             Let's build <span className="font-serif italic normal-case text-secondary">more.</span>
           </h2>
-          <div className="mt-12 grid gap-6 border-t border-primary-foreground/30 pt-8 md:grid-cols-3">
+          <div className="mt-12 grid gap-6 border-t border-primary-foreground/30 pt-8 md:grid-cols-2 xl:grid-cols-5">
             {[
-              { label: 'Email', value: contact.email, href: `mailto:${contact.email}`, icon: Mail },
-              { label: 'Phone', value: contact.phone, href: `tel:${contact.phoneHref}`, icon: Phone },
-              { label: 'LinkedIn', value: contact.placeholder ? 'Your LinkedIn profile' : 'Connect on LinkedIn', href: contact.linkedin, icon: Linkedin },
-            ].map(({ label, value, href, icon: Icon }) => (
+              { label: 'Email', value: contact.email, icon: Mail },
+              { label: 'Phone', value: contact.phone, icon: Phone },
+            ].map(({ label, value, icon: Icon }) => (
               <div key={label} className="min-w-0">
                 <div className="flex items-center gap-3 text-secondary"><Icon size={20} /><span className="text-sm font-bold uppercase">{label}</span></div>
-                {contact.placeholder ? <p className="mt-4 break-words text-lg">{value}</p> :
-                  <Button asChild variant="link" className="mt-3 h-auto max-w-full justify-start whitespace-normal p-0 text-lg text-primary-foreground"><a href={href} target={label === 'LinkedIn' ? '_blank' : undefined} rel={label === 'LinkedIn' ? 'noopener noreferrer' : undefined}>{value}<ArrowUpRight /></a></Button>}
-                {contact.placeholder && <p className="mt-2 text-xs text-primary-foreground/60">Placeholder</p>}
+                <p className="mt-4 break-words text-lg">{value}</p>
               </div>
+            ))}
+            {[
+              { label: 'Instagram', href: contact.instagram, icon: Instagram },
+              { label: 'X', href: contact.x, icon: X },
+              { label: 'LinkedIn', href: contact.linkedin, icon: Linkedin },
+            ].map(({ label, href, icon: Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${label} profile`}
+                className="group flex min-w-0 items-center gap-3 rounded-md py-2 text-primary-foreground transition duration-300 hover:-translate-y-1 hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+              >
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-primary-foreground/30 transition-colors duration-300 group-hover:border-secondary group-hover:bg-secondary/10">
+                  <Icon size={20} className="transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-sm font-bold uppercase">{label}</span>
+                  <span className="mt-1 block text-xs text-primary-foreground/70">View profile</span>
+                </span>
+                <ArrowUpRight size={16} className="ml-auto shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </a>
             ))}
           </div>
           <div className="mt-12 flex flex-wrap justify-between gap-4 border-t border-primary-foreground/30 pt-6 text-sm opacity-80">
