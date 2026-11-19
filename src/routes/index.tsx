@@ -47,19 +47,34 @@ export const Route = createFileRoute("/")({
 
 const chapters = [
   {
-    no: "01", kicker: "The Leader", title: "Leading together, achieving more.",
+    no: "01", kicker: "Leader", title: "Leading together, achieving more.",
     body: "From JCR President of Jean Nelson Aka Hall to the 68th Vice President of the University of Ghana SRC. Building a campus where every student is heard.",
     imgs: [31, 16, 29] as const,
   },
   {
-    no: "02", kicker: "The Pharmacist", title: "In a white coat.",
+    no: "02", kicker: "Pharmacist", title: "In a white coat.",
     body: "Doctor of Pharmacy, School of Pharmacy, College of Health Sciences. Health drives and screenings.",
     imgs: [22, 25, 94] as const,
   },
   {
-    no: "03", kicker: "The Advocate", title: "A seat at every table.",
+    no: "03", kicker: "Advocate", title: "A seat at every table.",
     body: "Young emerging political leader with WYDE and ENoP, speaker at summits and conferences across Ghana and beyond.",
     imgs: [34, 43, 35] as const,
+  },
+  {
+    no: "04", kicker: "Volunteering", title: "Service that reaches the community.",
+    body: "Supported Dean’s Food Bank and donations to the Medical School, and engaged school children through community outreach.",
+    imgs: [36, 86, 85] as const,
+  },
+  {
+    no: "05", kicker: "International travels", title: "Learning across borders.",
+    body: "Supported the Campus to Countries initiative, connecting students through cultural exchange, youth mobility and experiential learning in Togo and Benin.",
+    imgs: [68, 72, 69] as const,
+  },
+  {
+    no: "06", kicker: "Research", title: "Curiosity in health research.",
+    body: "As a Research Assistant in Pharmaceutical Chemistry, supported a systematic review on AI as a core competency in health professions education. Interested in medicines safety, public health and digital health.",
+    imgs: [82, 22, 25] as const,
   },
 ];
 
@@ -174,7 +189,7 @@ function Index() {
       <section id="impact" className="grain bg-primary py-24 text-primary-foreground">
         <div className="mx-auto max-w-7xl px-6">
           <h2 className="reveal font-display text-6xl uppercase md:text-8xl">
-            Impact, <span className="font-serif italic normal-case text-secondary">not promises.</span>
+            Impact
           </h2>
           <div className="mt-16 grid gap-12 md:grid-cols-3">
             {impact.map((i) => (
