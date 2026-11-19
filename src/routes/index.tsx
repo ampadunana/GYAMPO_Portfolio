@@ -9,6 +9,26 @@ import { Mail, Phone, Linkedin, Instagram, ArrowUpRight, X, ChevronLeft, Chevron
 
 const P = photos as string[];
 const heroPhotoIndices = [24, 94, 23] as const;
+const excludedMomentIndices = new Set([
+  2, // Opening ceremony flyer
+  3, // “The Nations’ Hope and Glory” screenshot
+  5, // Generic health drive flyer
+  20, // Generic white coat ceremony flyer
+  47, // Togo and Benin flyer
+  48, // Leadership, governance and accountability flyer
+  49, // UG Student Experience Conference flyer
+  60, // Generic Empower Vault Summit flyer
+]);
+const momentPhotos = P.map((src, sourceIndex) => ({ src, sourceIndex })).filter(
+  ({ sourceIndex }) => !excludedMomentIndices.has(sourceIndex),
+);
+// Keep the sex education flyer and move it beside the renovated washroom project.
+const sexEducationMoment = momentPhotos.find(({ sourceIndex }) => sourceIndex === 10)!;
+const moments = [
+  ...momentPhotos.filter(({ sourceIndex }) => sourceIndex < 60 && sourceIndex !== 10),
+  sexEducationMoment,
+  ...momentPhotos.filter(({ sourceIndex }) => sourceIndex >= 60),
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -100,8 +120,8 @@ function Index() {
     if (open === null) return;
     const k = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(null);
-      if (e.key === "ArrowRight") setOpen((i) => i === null ? null : (i + 1) % P.length);
-      if (e.key === "ArrowLeft") setOpen((i) => i === null ? null : (i - 1 + P.length) % P.length);
+      if (e.key === "ArrowRight") setOpen((i) => i === null ? null : (i + 1) % moments.length);
+      if (e.key === "ArrowLeft") setOpen((i) => i === null ? null : (i - 1 + moments.length) % moments.length);
     };
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
@@ -169,8 +189,8 @@ function Index() {
 
       {/* FILMSTRIP */}
       <section className="space-y-4 bg-ink py-16">
-        <Marquee>{P.slice(0, 24).map((s) => <img key={s} src={s} alt="" loading="lazy" className="film-photo mx-2 h-56 w-auto object-cover grayscale transition hover:grayscale-0" />)}</Marquee>
-        <Marquee reverse>{P.slice(24, 48).map((s) => <img key={s} src={s} alt="" loading="lazy" className="film-photo mx-2 h-56 w-auto object-cover grayscale transition hover:grayscale-0" />)}</Marquee>
+        <Marquee>{moments.slice(0, 24).map(({ src }) => <img key={src} src={src} alt="" loading="lazy" className="film-photo mx-2 h-56 w-auto object-cover grayscale transition hover:grayscale-0" />)}</Marquee>
+        <Marquee reverse>{moments.slice(24, 48).map(({ src }) => <img key={src} src={src} alt="" loading="lazy" className="film-photo mx-2 h-56 w-auto object-cover grayscale transition hover:grayscale-0" />)}</Marquee>
       </section>
 
       {/* GALLERY */}
@@ -180,7 +200,7 @@ function Index() {
             <h2 className="font-display text-6xl uppercase text-primary md:text-8xl">Moments</h2>
           </div>
           <div className="mt-12 columns-2 gap-4 md:columns-4">
-            {P.map((src, i) => (
+            {moments.map(({ src }, i) => (
               <Button variant="ghost" key={src} onClick={() => setOpen(i)} aria-label={`Open photo ${i + 1}`} className="group relative mb-4 block h-auto w-full overflow-hidden rounded-none p-0">
                 <img src={src} alt={`Portfolio photo ${i + 1}`} loading="lazy" className="w-full transition duration-700 group-hover:scale-110" />
                 <span className="absolute inset-0 flex items-end bg-ink/0 p-3 font-display text-3xl text-secondary opacity-0 transition group-hover:bg-ink/50 group-hover:opacity-100">
@@ -242,11 +262,11 @@ function Index() {
 
       {open !== null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink p-4" onClick={() => setOpen(null)}>
-          <img src={P[open]} onClick={(e) => e.stopPropagation()} alt={`Portfolio photo ${open + 1}`} className="max-h-[85vh] max-w-full object-contain" />
-          <div className="absolute left-6 top-5 font-display text-3xl text-secondary">{String(open + 1).padStart(2, "0")} / {P.length}</div>
+          <img src={moments[open].src} onClick={(e) => e.stopPropagation()} alt={`Portfolio photo ${open + 1}`} className="max-h-[85vh] max-w-full object-contain" />
+          <div className="absolute left-6 top-5 font-display text-3xl text-secondary">{String(open + 1).padStart(2, "0")} / {moments.length}</div>
           <Button variant="ghost" size="icon" onClick={() => setOpen(null)} className="absolute right-6 top-4 text-ink-foreground" aria-label="Close"><X /></Button>
-          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); setOpen((open - 1 + P.length) % P.length); }} className="absolute left-4 top-1/2 font-display text-ink-foreground hover:text-secondary" aria-label="Previous"><ChevronLeft /></Button>
-          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); setOpen((open + 1) % P.length); }} className="absolute right-4 top-1/2 font-display text-ink-foreground hover:text-secondary" aria-label="Next"><ChevronRight /></Button>
+          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); setOpen((open - 1 + moments.length) % moments.length); }} className="absolute left-4 top-1/2 font-display text-ink-foreground hover:text-secondary" aria-label="Previous"><ChevronLeft /></Button>
+          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); setOpen((open + 1) % moments.length); }} className="absolute right-4 top-1/2 font-display text-ink-foreground hover:text-secondary" aria-label="Next"><ChevronRight /></Button>
         </div>
       )}
     </main>
